@@ -1,0 +1,346 @@
+# SORA 视频生成接口说明文档
+
+## 一、提交视频生成任务
+
+### 1. ApixPro 接口（推荐）
+
+#### 接口信息
+- **请求方法**: `POST`
+- **接口地址**: `{base_url}/v1/videos` 或 `{base_url}/videos`
+- **超时时间**: 30 秒
+- **Content-Type**: `application/json`
+
+#### 请求头
+```
+Authorization: Bearer {api_key}
+Content-Type: application/json
+```
+
+#### 请求体（JSON）
+```json
+{
+  "model": "sora-2",           // 模型名称（必填，优先使用配置中的第一个模型）
+  "prompt": "视频描述文本",      // 提示词（必填）
+  "duration": 10               // 视频时长（秒）：10 或 15（必填）
+}
+```
+
+#### 参数说明
+
+**必填参数：**
+- `model`（字符串）：模型名称
+  - 优先使用配置中的第一个模型
+  - 如果配置中没有模型，使用任务指定的模型
+  - 默认值：`sora-2`
+- `prompt`（字符串）：视频描述文本
+- `duration`（整数）：视频时长（秒）
+  - 支持值：`10` 或 `15`
+  - 默认值：`10`
+  - 自动调整规则：
+    - ≤ 12 秒 → 调整为 10 秒
+    - > 12 秒 → 调整为 15 秒
+
+#### 成功响应
+```json
+{
+  "id": "task_xxxxxx",         // 或 "task_id": "task_xxxxxx"
+  "task_id": "task_xxxxxx",     // 任务ID（用于后续查询）
+  "status": "processing",      // 任务状态：pending | processing | completed | failed
+  "progress": 0,               // 进度（0-100）
+  "created_at": 0
+}
+```
+
+#### 错误响应
+```json
+{
+  "error": {
+    "message": "error message",
+    "type": "error_type",
+    "code": "error_code"
+  }
+}
+```
+
+---
+
+### 2. OpenAI 兼容接口
+
+#### 接口信息
+- **请求方法**: `POST`
+- **接口地址**: `{base_url}/v1/videos/generations` 或 `{base_url}/videos/generations`
+- **超时时间**: 30 秒
+- **Content-Type**: `application/json`
+
+#### 请求头
+```
+Authorization: Bearer {api_key}
+Content-Type: application/json
+```
+
+#### 请求体（JSON）
+```json
+{
+  "model": "sora",             // 模型名称（必填，优先使用配置中的第一个模型）
+  "prompt": "视频描述文本",     // 提示词（必填）
+  "duration": 10,             // 视频时长（秒），默认10
+  "size": "1920x1080"         // 视频分辨率（必填）
+}
+```
+
+#### 参数说明
+
+**必填参数：**
+- `model`（字符串）：模型名称
+  - 优先使用配置中的第一个模型
+  - 如果配置中没有模型，使用任务指定的模型
+  - 默认值：`sora`
+- `prompt`（字符串）：视频描述文本
+- `duration`（整数）：视频时长（秒），默认 10
+- `size`（字符串）：视频分辨率
+  - `720p` → `1280x720`
+  - `1080p` → `1920x1080`
+  - `4k` → `1024x1792`
+
+#### 成功响应
+```json
+{
+  "id": "task_xxxxxx",
+  "status": "processing",
+  "progress": 0
+}
+```
+
+#### 错误响应
+```json
+{
+  "error": {
+    "message": "error message"
+  }
+}
+```
+
+---
+
+## 二、查询视频生成任务状态
+
+### 1. ApixPro 接口查询
+
+#### 接口信息
+- **请求方法**: `GET`
+- **接口地址**: `{base_url}/v1/videos/{task_id}`
+- **超时时间**: 10 秒
+
+#### 请求头
+```
+Authorization: Bearer {api_key}
+```
+
+#### 响应格式（多种可能）
+
+**格式1：直接格式**
+```json
+{
+  "id": "task_xxxxxx",
+  "status": "completed",
+  "progress": 100,
+  "video_url": "https://example.com/video.mp4"
+}
+```
+
+**格式2：嵌套格式（最常见）**
+```json
+{
+  "status": "SUCCESS",
+  "data": {
+    "status": "completed",
+    "choices": [
+      {
+        "message": {
+          "content": "{\"video_url\":\"https://example.com/video.mp4\"}"
+        }
+      }
+    ]
+  }
+}
+```
+
+**格式3：嵌套格式（另一种）**
+```json
+{
+  "status": "completed",
+  "data": {
+    "choices": [
+      {
+        "message": {
+          "content": "{\"video_url\":\"https://example.com/video.mp4\"}"
+        }
+      }
+    ]
+  }
+}
+```
+
+#### 状态说明
+- `pending` / `queued`：排队中
+- `processing` / `in_progress`：处理中
+- `completed` / `SUCCESS` / `succeeded`：已完成
+- `failed` / `FAILED`：失败
+
+#### 进度解析
+- 如果 `progress` 是字符串（如 `"70%"`），会提取数字部分
+- 如果 `progress` 是数字：
+  - ≤ 1：视为小数（0.7 → 70%）
+  - > 1：视为百分比（70 → 70%）
+
+#### 视频URL提取逻辑
+系统会按以下顺序尝试提取视频URL：
+1. `data.video_url`
+2. `data.result_url`
+3. `data.choices[0].message.content`（JSON字符串解析）
+4. `data.data.choices[0].message.content`（嵌套格式）
+5. `data.data.video_url` 或 `data.data.result_url`
+
+---
+
+### 2. OpenAI 兼容接口查询
+
+#### 接口信息
+- **请求方法**: `GET`
+- **接口地址**: `{base_url}/v1/videos/{task_id}`
+- **超时时间**: 10 秒
+
+#### 请求头
+```
+Authorization: Bearer {api_key}
+```
+
+#### 响应格式
+```json
+{
+  "id": "task_xxxxxx",
+  "status": "succeeded",        // pending | running | succeeded | failed
+  "progress": 100,              // 进度（0-100）
+  "video_url": "https://example.com/video.mp4"
+}
+```
+
+#### 状态说明
+- `pending`：排队中
+- `running`：处理中
+- `succeeded`：已完成
+- `failed`：失败
+
+#### 进度解析
+- 如果 `progress` 是字符串（如 `"70%"`），会提取数字部分
+- 如果 `progress` 是数字：
+  - ≤ 1：视为小数（0.7 → 70%）
+  - > 1：视为百分比（70 → 70%）
+
+---
+
+## 三、完整流程示例
+
+### 1. 提交任务
+```bash
+POST https://apixpro.com/v1/videos
+Authorization: Bearer your_api_key
+Content-Type: application/json
+
+{
+  "model": "sora-2",
+  "prompt": "A beautiful sunset over the ocean",
+  "duration": 10
+}
+```
+
+**响应：**
+```json
+{
+  "id": "TASK_1769447076263730",
+  "task_id": "TASK_1769447076263730",
+  "status": "queued",
+  "progress": 0,
+  "created_at": 0
+}
+```
+
+### 2. 轮询查询（每5秒）
+```bash
+GET https://apixpro.com/v1/videos/TASK_1769447076263730
+Authorization: Bearer your_api_key
+```
+
+**处理中响应：**
+```json
+{
+  "id": "TASK_1769447076263730",
+  "status": "in_progress",
+  "progress": 15
+}
+```
+
+**完成响应：**
+```json
+{
+  "status": "SUCCESS",
+  "data": {
+    "status": "completed",
+    "choices": [
+      {
+        "message": {
+          "content": "{\"video_url\":\"https://example.com/video.mp4\"}"
+        }
+      }
+    ]
+  }
+}
+```
+
+---
+
+## 四、注意事项
+
+1. **模型选择**：
+   - 优先使用配置中的第一个模型
+   - 如果配置中没有模型，使用任务指定的模型
+   - 默认值：ApixPro接口为 `sora-2`，OpenAI兼容接口为 `sora`
+
+2. **时长限制**：
+   - SORA支持 10 秒或 15 秒
+   - 系统会自动调整到最接近的有效值
+
+3. **轮询频率**：
+   - 系统每5秒轮询一次任务状态
+   - 查询超时时间为10秒
+
+4. **视频URL提取**：
+   - ApixPro接口的响应格式可能有多种，系统会尝试多个位置提取URL
+   - 如果提取失败，任务仍会标记为完成，但需要手动检查
+
+5. **本地缓存**：
+   - 视频生成完成后，系统会自动下载并保存到本地服务器
+   - 本地路径：`uploads/videos/{uuid}.mp4`
+   - 返回的URL为本地服务器URL
+
+---
+
+## 五、错误处理
+
+### 常见错误
+1. **404 - Invalid URL**：
+   - 检查API路径是否正确
+   - ApixPro接口应使用 `/v1/videos`，不是 `/v1/videos/generations`
+
+2. **503 - model_not_found**：
+   - 检查模型名称是否正确
+   - 确认配置中的模型列表是否有效
+
+3. **任务一直显示processing**：
+   - 检查响应中是否包含 `video_url`
+   - 查看日志确认URL提取逻辑是否正常工作
+
+### 调试建议
+- 查看后端日志文件：`backend/LOG.TXT`
+- 检查API调用日志，确认请求参数和响应格式
+- 验证API密钥和baseUrl配置是否正确
